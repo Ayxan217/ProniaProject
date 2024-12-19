@@ -24,6 +24,7 @@ namespace ProniaProject.Conrollers
             if (!string.IsNullOrEmpty(search))
             {
                 query = query.Where(q => q.Name.ToLower().Contains(search.ToLower()));
+                Console.WriteLine("test");
             }
 
             if(categoryId != null && categoryId > 0)
