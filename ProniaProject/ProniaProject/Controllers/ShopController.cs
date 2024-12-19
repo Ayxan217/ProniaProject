@@ -24,7 +24,7 @@ namespace ProniaProject.Conrollers
             if (!string.IsNullOrEmpty(search))
             {
                 query = query.Where(q => q.Name.ToLower().Contains(search.ToLower()));
-                Console.WriteLine("test");
+                
             }
 
             if(categoryId != null && categoryId > 0)
@@ -51,8 +51,20 @@ namespace ProniaProject.Conrollers
 
             ShopVM shopVM = new ShopVM()
             {
-                Products = query.ToList(),
-                Categories = await _context.Categories.Include(c=>c.Products).ToListAsync(),
+                Products = await query.Select(p => new GetProductVM
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Image = p.Images.FirstOrDefault(pi => pi.IsPrime == true).Image,
+                    SecondaryImage = p.Images.FirstOrDefault(pi => pi.IsPrime == false).Image,
+                    Price = p.Price,
+                }).ToListAsync(),
+                Categories = await _context.Categories.Select(c => new GetCategoryVM
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Count = c.Products.Count
+                }).ToListAsync(),
                 SearchValue = search,
                 CategoryId = categoryId,
                 Key = key,

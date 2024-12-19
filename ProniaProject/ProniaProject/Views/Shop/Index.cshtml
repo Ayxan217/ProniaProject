@@ -46,12 +46,12 @@
                                             All <span>(65)</span>
                                         </a>
                                     </li>
-                                    @foreach(Category category in Model.Categories)
+                                    @foreach(GetCategoryVM categoryVM in Model.Categories)
                                     {
                                         <li>
-                                            <a asp-action="index" asp-route-categoryId="@category.Id" asp-route-search="@Model.SearchValue" asp-route-key="@Model.Key">
+                                            <a asp-action="index" asp-route-categoryId="@categoryVM.Id" asp-route-search="@Model.SearchValue" asp-route-key="@Model.Key">
                                                 <i class="fa fa-chevron-right"></i>
-                                                @category.Name <span>(@category.Products.Count)</span>
+                                                @categoryVM.Name <span>(@categoryVM.Count)</span>
                                             </a>
                                         </li>
                                     }
@@ -208,17 +208,17 @@
                              role="tabpanel"
                              aria-labelledby="grid-view-tab">
                             <div class="product-grid-view row g-y-20">
-                                @foreach(Product product in Model.Products)
+                                @foreach(GetProductVM productVM in Model.Products)
                                 {
                                     <div class="col-md-4 col-sm-6">
                                         <div class="product-item">
                                             <div class="product-img">
-                                                <a href="single-product-variable.html">
+                                                <a asp-action="details" asp-controller="shop" asp-route-Id="@productVM.Id">
                                                     <img class="primary-img"
-                                                         src="assets/images/website-images/@product.Images.FirstOrDefault(pi=>pi.IsPrime==true)?.Image"
+                                                         src="assets/images/website-images/@productVM.Image"
                                                          alt="Product Images" />
                                                     <img class="secondary-img"
-                                                         src="assets/images/website-images/@product.Images.FirstOrDefault(pi=>pi.IsPrime==false)?.Image"
+                                                         src="assets/images/website-images/@productVM.SecondaryImage"
                                                          alt="Product Images" />
                                                 </a>
                                                 <div class="product-add-action">
@@ -263,9 +263,9 @@
                                             </div>
                                             <div class="product-content">
                                                 <a class="product-name"
-                                                   href="single-product-variable.html">@product.Name</a>
+                                                   href="single-product-variable.html">@productVM.Name</a>
                                                 <div class="price-box pb-1">
-                                                    <span class="new-price">$@product.Price</span>
+                                                    <span class="new-price">$@productVM.Price</span>
                                                 </div>
                                                 <div class="rating-box">
                                                     <ul>
